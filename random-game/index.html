@@ -12,9 +12,102 @@
     ></script>
   </head>
   <body class="body">
-    <header class="header"></header>
+    <header class="header">
+      <div class="title__contaier">
+        <h1>
+          <div class="title">2</div>
+          <div class="title">0</div>
+          <div class="title">4</div>
+          <div class="title">8</div>
+        </h1>
+        <div class="link">
+          <p>It's only copy</p>
+          <a href="https://play2048.co/" target="_blank"><p>2048</p></a>
+        </div>
+      </div>
+      <div class="info-links">
+        <div class="records-link">RECORDS</div>
+        <div class="rules-link">HOW TO PLAY</div>
+      </div>
+    </header>
     <main class="main">
+      <div class="score__container">
+        <div class="score-best"></div>
+        <div class="score-game"></div>
+      </div>
       <div class="field"></div>
+      <div class="fixed-overlay opacity hidden">
+        <div class="modal-records opacity hidden">
+          <div class="close-btn"></div>
+          <div class="empty-records__container">
+            <div class="records__title">RECORDS</div>
+            <div class="empty-stub">
+              <div>It's still empty here.</div>
+              <div>You can leave your result after playing the game.</div>
+            </div>
+          </div>
+          <div class="best-records__container hidden">
+            <div class="records__title">BEST RECORDS</div>
+            <div class="records__header">
+              <div class="records__header_name">NAME</div>
+              <div class="records__header_score">SCORE</div>
+            </div>
+          </div>
+          <div class="last-games__container hidden">
+            <div class="records__title">LAST GAMES RECORDS</div>
+            <div class="records__header">
+              <div class="records__header_name">NAME</div>
+              <div class="records__header_score">SCORE</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-rules opacity hidden">
+          <div class="close-btn"></div>
+          <div class="rules__container">
+            <div class="rules__title">HOW TO PLAY</div>
+            <div class="rules">
+              <div>Use your arrow keys to move the tiles.</div>
+              <div>
+                Tiles of the same number merge into one when they touch, the
+                game points are increased by the face value of the resulting
+                tile.
+              </div>
+              <div>
+                After each move, a new tile with a face value of "2" or "4"
+                appears on the free section of the field, if a tile with a face
+                value of "4", the game points are reduced by 4.
+              </div>
+              <div>
+                If the location of the tiles or their nominal value does not
+                change when the arrow keys are pressed, then the move is not
+                made.
+              </div>
+              <div>
+                The game ends with a loss if it is impossible to perform an
+                action after the another move.
+              </div>
+              <div>
+                The game ends with a win if, when adding tiles on the field, a
+                tile with a face value of "2048" turns out.
+              </div>
+            </div>
+          </div>
+          <div class="best-records__container hidden">
+            <div class="records__title">BEST RECORDS</div>
+            <div class="records__header">
+              <div class="records__header_name">NAME</div>
+              <div class="records__header_score">SCORE</div>
+            </div>
+          </div>
+          <div class="last-games__container hidden">
+            <div class="records__title">LAST GAMES RECORDS</div>
+            <div class="records__header">
+              <div class="records__header_name">NAME</div>
+              <div class="records__header_score">SCORE</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <footer>
       <div class="footer-group">
@@ -22,7 +115,7 @@
           href="https://github.com/ChernyavskayaEv"
           target="_blank"
           class="github"
-          ><p>My GitHub</p>
+        >
         </a>
       </div>
       <div class="footer-group">2023-2024</div>
