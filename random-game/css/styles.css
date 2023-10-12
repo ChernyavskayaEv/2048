@@ -200,7 +200,6 @@ body {
 
 .link > a:hover {
   color: #0074b7;
-  /* text-shadow: 1px 1px 2px #fff, 2px 2px 5px #000; */
 }
 
 .info-links {
@@ -243,6 +242,78 @@ body {
   align-items: center;
   gap: 15px;
   flex-grow: 1;
+  position: relative;
+}
+
+.modal-start-game {
+  width: 430px;
+  padding: 20px;
+  background-color: #7b7b7b;
+  border-radius: 15px;
+  box-shadow: 1px 1px 10px #292727, 2px 2px 15px #000;
+  text-shadow: 1px 1px 2px #292727, 2px 2px 5px #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: fixed;
+  top: 220px;
+  left: auto;
+  right: auto;
+  transition: all 1s ease-in-out;
+}
+
+.start-game__title {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.start-game__name {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.start-game__name_input {
+  width: 100%;
+  padding: 5px;
+  background-color: #e3dfdf;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #292727, 2px 2px 5px #000;
+  font-size: 18px;
+  letter-spacing: 1px;
+  transition: all 1s ease-in-out;
+}
+
+.start-game__name_input.error {
+  box-shadow: 1px 1px 2px #b36b6b, 2px 2px 5px #bd2222;
+}
+
+.start-game__button {
+  padding: 15px;
+  background-color: #02894b;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #292727, 2px 2px 5px #000;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 1px 1px 2px #292727, 2px 2px 5px #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  transition: all 1s ease-in-out;
+}
+
+.start-game__button:hover {
+  background-color: #016236;
 }
 
 .score__container {

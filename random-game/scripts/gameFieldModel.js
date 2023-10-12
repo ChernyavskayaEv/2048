@@ -1,27 +1,64 @@
 class GameField {
   constructor() {
     this.field = Array.from(Array(4), (x) => Array.from(Array(4), (x) => null));
-    this.changedField = this.field;
+    this.saveChangedField();
     this.numberOfMoves = 0;
     this.score = 0;
     this.bestScore = 0;
   }
 
-  fillRandomCell() {
-    const emptyCells = this.field.reduce((acc, row, indexRow) => {
+  saveChangedField() {
+    this.changedField = this.field.map((row) => row.map((cell) => cell));
+  }
+
+  checkEmptyCells() {
+    return this.field.reduce((acc, row, indexRow) => {
       for (let indexColumn = 0; indexColumn < row.length; indexColumn++) {
         row[indexColumn] === null ? acc.push(`${indexRow}${indexColumn}`) : acc;
       }
       return acc;
     }, []);
+  }
+
+  getSiblings(indexRow, indexColumn) {
+    let indexRows = [indexRow + 1, indexRow - 1].filter(
+      (value) => value >= 0 && value < 4
+    );
+    let indexColumns = [indexColumn + 1, indexColumn - 1].filter(
+      (value) => value >= 0 && value < 4
+    );
+    let result = [];
+    for (let x of indexRows) {
+      result.push(this.field[x][indexColumn]);
+    }
+    for (let y of indexColumns) {
+      result.push(this.field[indexRow][y]);
+    }
+    return result;
+  }
+
+  checkSiblings() {
+    for (let indexRow = 0; indexRow < 4; indexRow++) {
+      for (let indexColumn = 0; indexColumn < 4; indexColumn++) {
+        let siblings = this.getSiblings(indexRow, indexColumn);
+        if (siblings.includes(this.field[indexRow][indexColumn])) return true;
+      }
+    }
+    return false;
+  }
+
+  fillRandomCell() {
+    const emptyCells = this.checkEmptyCells();
     const indexRandomCell = Math.floor(Math.random() * emptyCells.length);
     const [indexRow, indexColumn] = [...emptyCells[indexRandomCell]];
     let randomNumber = Math.random() > 0.1 ? 2 : 4;
     this.field[indexRow][indexColumn] = randomNumber;
     if (randomNumber === 4 && this.score >= 4) this.score -= 4;
-    this.bestScore < this.score
-      ? (this.bestScore = this.score)
-      : this.bestScore;
+    if (
+      this.bestScore < this.score ||
+      (this.bestScore === this.score + 4 && randomNumber === 4)
+    )
+      this.bestScore = this.score;
   }
 
   sumCells() {
@@ -95,11 +132,15 @@ class GameField {
     let check = this.field.every((row, i) =>
       row.every((value, j) => value === this.changedField[i][j])
     );
-    console.log(check);
-    if (!check) {
-      this.fillRandomCell();
-      this.changedField = this.field;
-      this.numberOfMoves++;
+    console.log(this.checkSiblings());
+    if (this.checkEmptyCells().length === 0 && !this.checkSiblings()) {
+      console.log('game over');
+    } else {
+      if (!check) {
+        this.fillRandomCell();
+        this.saveChangedField();
+        this.numberOfMoves++;
+      }
     }
   }
 

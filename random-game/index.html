@@ -31,6 +31,23 @@
       </div>
     </header>
     <main class="main">
+      <div class="modal-start-game">
+        <div class="start-game__title">Welcome to the game!</div>
+        <div class="start-game__name">
+          <label for="name" class="start-game__name_label"
+            >Enter your name before starting the game</label
+          >
+          <input
+            type="text"
+            name="name"
+            id="name"
+            class="start-game__name_input"
+            placeholder="name"
+            autocomplete="off"
+          />
+        </div>
+        <button class="start-game__button">New game</button>
+      </div>
       <div class="score__container">
         <div class="score-best"></div>
         <div class="score-game"></div>
@@ -129,6 +146,7 @@
       </div>
     </footer>
     <script src="./scripts/gameFieldModel.js"></script>
+    <script src="./scripts/playerModel.js"></script>
     <script src="./scripts/main.js"></script>
     <script src="./scripts/score.js"></script>
   </body>

@@ -2,6 +2,8 @@ const header = document.querySelector('.header');
 const fixedOverlay = document.querySelector('.fixed-overlay');
 const modalRecords = document.querySelector('.modal-records');
 const modalRules = document.querySelector('.modal-rules');
+const modalStartGame = document.querySelector('.modal-start-game');
+const nameInput = document.querySelector('.start-game__name_input');
 const field = document.querySelector('.field');
 const bestScore = document.querySelector('.score-best');
 const gameScore = document.querySelector('.score-game');
@@ -90,8 +92,31 @@ const fillGameField = () => {
 };
 
 createGameField();
-gameField.fillRandomCell();
 fillGameField();
+
+const player = new Player();
+
+modalStartGame.addEventListener('click', (event) => {
+  if (event.target.closest('.start-game__button')) {
+    if (nameInput.value) {
+      modalStartGame.classList.add('opacity');
+      setTimeout(() => {
+        modalStartGame.classList.add('hidden');
+        gameField.fillRandomCell();
+        fillGameField();
+      }, 1000);
+      player.name = nameInput.value;
+    } else {
+      nameInput.classList.add('error');
+      nameInput.setAttribute('placeholder', 'enter your name');
+    }
+  }
+});
+
+nameInput.addEventListener('focus', () => {
+  nameInput.classList.remove('error');
+  nameInput.setAttribute('placeholder', 'name');
+});
 
 document.addEventListener('keydown', function (event) {
   if (event.code === 'ArrowRight') {
@@ -110,5 +135,4 @@ document.addEventListener('keydown', function (event) {
     gameField.moveDown();
     fillGameField();
   }
-  console.log(gameField.numberOfMoves);
 });
