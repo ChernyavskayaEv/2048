@@ -132,9 +132,17 @@ class GameField {
     let check = this.field.every((row, i) =>
       row.every((value, j) => value === this.changedField[i][j])
     );
-    console.log(this.checkSiblings());
     if (this.checkEmptyCells().length === 0 && !this.checkSiblings()) {
-      console.log('game over');
+      let allCells = this.field.reduce((acc, row) => [...acc, ...row], []);
+      player.numberOfMoves = this.numberOfMoves;
+      player.score = this.score;
+
+      if (allCells.includes(2048)) {
+        player.winnings();
+      } else {
+        player.loss();
+      }
+      saveGames();
     } else {
       if (!check) {
         this.fillRandomCell();

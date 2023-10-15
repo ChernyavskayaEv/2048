@@ -245,7 +245,8 @@ body {
   position: relative;
 }
 
-.modal-start-game {
+.modal-start-game,
+.modal-game-over {
   width: 430px;
   padding: 20px;
   background-color: #7b7b7b;
@@ -264,7 +265,21 @@ body {
   transition: all 1s ease-in-out;
 }
 
-.start-game__title {
+.game-over__description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.game-over__result {
+  text-align: center;
+  line-height: 30px;
+}
+
+.start-game__title,
+.game-over__title {
   font-size: 24px;
   font-weight: 500;
   letter-spacing: 1px;
@@ -294,7 +309,14 @@ body {
   box-shadow: 1px 1px 2px #b36b6b, 2px 2px 5px #bd2222;
 }
 
-.start-game__button {
+.button__container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.button {
   padding: 15px;
   background-color: #02894b;
   border-radius: 5px;
@@ -312,8 +334,16 @@ body {
   transition: all 1s ease-in-out;
 }
 
-.start-game__button:hover {
+.button:hover {
   background-color: #016236;
+}
+
+.change-name__button {
+  background-color: #0e86d4;
+}
+
+.change-name__button:hover {
+  background-color: #055c9d;
 }
 
 .score__container {
@@ -476,7 +506,8 @@ body {
   line-height: 30px;
 }
 
-.records__header {
+.records__header,
+.records__item {
   width: 100%;
   padding: 5px;
   border-bottom: 1px solid #fff;
@@ -486,6 +517,22 @@ body {
   display: flex;
   justify-content: space-around;
   gap: 70px;
+}
+
+.records__item {
+  border-bottom: 0.5px solid #fff;
+}
+
+.records__item > div {
+  width: 40%;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.records__item:last-child {
+  border-bottom: none;
 }
 
 footer {

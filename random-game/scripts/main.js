@@ -24,6 +24,7 @@ const openModalRecords = () => {
     fixedOverlay.classList.remove('opacity');
     modalRecords.classList.remove('opacity');
   }, 50);
+  getGames();
 };
 
 const openModalRules = () => {
@@ -105,7 +106,8 @@ modalStartGame.addEventListener('click', (event) => {
         gameField.fillRandomCell();
         fillGameField();
       }, 1000);
-      player.name = nameInput.value;
+      let name = nameInput.value;
+      player.name = name[0].toUpperCase() + name.slice(1);
     } else {
       nameInput.classList.add('error');
       nameInput.setAttribute('placeholder', 'enter your name');
@@ -116,6 +118,39 @@ modalStartGame.addEventListener('click', (event) => {
 nameInput.addEventListener('focus', () => {
   nameInput.classList.remove('error');
   nameInput.setAttribute('placeholder', 'name');
+});
+
+modalGameOver.addEventListener('click', (event) => {
+  if (event.target.closest('.restart-game__button')) {
+    modalGameOver.classList.add('opacity');
+    setTimeout(() => {
+      modalGameOver.classList.add('hidden');
+      gameField.fillRandomCell();
+      fillGameField();
+    }, 1000);
+    gameField.field = Array.from(Array(4), (x) =>
+      Array.from(Array(4), (x) => null)
+    );
+    gameField.saveChangedField();
+    gameField.numberOfMoves = 0;
+    gameField.score = 0;
+  }
+  if (event.target.closest('.change-name__button')) {
+    modalGameOver.classList.add('opacity');
+    setTimeout(() => {
+      modalGameOver.classList.add('hidden');
+      modalStartGame.classList.remove('hidden');
+    }, 1000);
+    setTimeout(() => {
+      modalStartGame.classList.remove('opacity');
+    }, 1050);
+    gameField.field = Array.from(Array(4), (x) =>
+      Array.from(Array(4), (x) => null)
+    );
+    gameField.saveChangedField();
+    gameField.numberOfMoves = 0;
+    gameField.score = 0;
+  }
 });
 
 document.addEventListener('keydown', function (event) {

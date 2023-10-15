@@ -46,7 +46,14 @@
             autocomplete="off"
           />
         </div>
-        <button class="start-game__button">New game</button>
+        <button class="start-game__button button">New game</button>
+      </div>
+      <div class="modal-game-over hidden opacity">
+        <div class="game-over__description"></div>
+        <div class="button__container">
+          <button class="change-name__button button">Change name</button>
+          <button class="restart-game__button button">New game</button>
+        </div>
       </div>
       <div class="score__container">
         <div class="score-best"></div>
@@ -56,7 +63,7 @@
       <div class="fixed-overlay opacity hidden">
         <div class="modal-records opacity hidden">
           <div class="close-btn"></div>
-          <div class="empty-records__container">
+          <div class="empty-records__container hidden">
             <div class="records__title">RECORDS</div>
             <div class="empty-stub">
               <div>It's still empty here.</div>
@@ -147,6 +154,7 @@
     </footer>
     <script src="./scripts/gameFieldModel.js"></script>
     <script src="./scripts/playerModel.js"></script>
+    <script src="./scripts/localStorage.js"></script>
     <script src="./scripts/main.js"></script>
     <script src="./scripts/score.js"></script>
   </body>
