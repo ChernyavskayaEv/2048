@@ -1,10 +1,16 @@
+const bestScore = document.querySelector('.score-best');
+const gameScore = document.querySelector('.score-game');
+
 class GameField {
   constructor() {
     this.field = Array.from(Array(4), (x) => Array.from(Array(4), (x) => null));
     this.saveChangedField();
     this.numberOfMoves = 0;
     this.score = 0;
-    this.bestScore = 0;
+
+    storage.games
+      ? (this.bestScore = JSON.parse(storage.games).bestGames[0][1])
+      : (this.bestScore = 0);
   }
 
   saveChangedField() {
@@ -47,18 +53,46 @@ class GameField {
     return false;
   }
 
+  fillGameField() {
+    bestScore.textContent = this.bestScore;
+    gameScore.textContent = this.score;
+    [...document.querySelectorAll('.cell')].forEach((cell) => {
+      cell.textContent = '';
+      cell.style.backgroundColor = '';
+    });
+    gameField.field.forEach((row, indexRow) =>
+      row.forEach((value, indexColumn) => {
+        if (value !== null) {
+          let cell = document.getElementById(`${indexRow}${indexColumn}`);
+          cell.textContent = value;
+          cell.style.backgroundColor = `${palette[value]}`;
+        }
+      })
+    );
+  }
+
   fillRandomCell() {
-    const emptyCells = this.checkEmptyCells();
-    const indexRandomCell = Math.floor(Math.random() * emptyCells.length);
-    const [indexRow, indexColumn] = [...emptyCells[indexRandomCell]];
-    let randomNumber = Math.random() > 0.1 ? 2 : 4;
-    this.field[indexRow][indexColumn] = randomNumber;
-    if (randomNumber === 4 && this.score >= 4) this.score -= 4;
-    if (
-      this.bestScore < this.score ||
-      (this.bestScore === this.score + 4 && randomNumber === 4)
-    )
-      this.bestScore = this.score;
+    setTimeout(() => {
+      const emptyCells = this.checkEmptyCells();
+      const indexRandomCell = Math.floor(Math.random() * emptyCells.length);
+      const [indexRow, indexColumn] = [...emptyCells[indexRandomCell]];
+      let randomNumber = Math.random() > 0.1 ? 2 : 4;
+      this.field[indexRow][indexColumn] = randomNumber;
+
+      this.saveChangedField();
+      let randomCell = document.getElementById(`${indexRow}${indexColumn}`);
+      randomCell.textContent = randomNumber;
+      randomCell.style.backgroundColor = `${palette[randomNumber]}`;
+
+      if (randomNumber === 4 && this.score >= 4) this.score -= 4;
+      if (
+        this.bestScore < this.score ||
+        (this.bestScore === this.score + 4 && randomNumber === 4)
+      )
+        this.bestScore = this.score;
+      bestScore.textContent = this.bestScore;
+      gameScore.textContent = this.score;
+    }, 500);
   }
 
   sumCells() {
@@ -145,30 +179,34 @@ class GameField {
       saveGames();
     } else {
       if (!check) {
-        this.fillRandomCell();
         this.saveChangedField();
         this.numberOfMoves++;
+        this.fillRandomCell();
       }
     }
   }
 
   moveLeft() {
     this.sumCells();
+    this.fillGameField();
     this.progressCheck();
   }
 
   moveRight() {
     this.reverseRow().sumCells().reverseRow();
+    this.fillGameField();
     this.progressCheck();
   }
 
   moveUp() {
     this.turnField().sumCells().turnField();
+    this.fillGameField();
     this.progressCheck();
   }
 
   moveDown() {
     this.turnField().reverseRow().sumCells().reverseRow().turnField();
+    this.fillGameField();
     this.progressCheck();
   }
 }

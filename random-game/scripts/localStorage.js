@@ -31,6 +31,8 @@ const saveGames = () => {
 };
 
 const getGames = () => {
+  let recordsItem = document.querySelectorAll('.records__item');
+  recordsItem.forEach((item) => item.remove());
   let games = storage.getItem('games');
   if (games) {
     let { lastGames, bestGames } = JSON.parse(games);

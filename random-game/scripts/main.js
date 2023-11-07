@@ -5,8 +5,6 @@ const modalRules = document.querySelector('.modal-rules');
 const modalStartGame = document.querySelector('.modal-start-game');
 const nameInput = document.querySelector('.start-game__name_input');
 const field = document.querySelector('.field');
-const bestScore = document.querySelector('.score-best');
-const gameScore = document.querySelector('.score-game');
 
 header.addEventListener('click', (event) => {
   if (event.target.closest('.records-link')) openModalRecords();
@@ -14,7 +12,16 @@ header.addEventListener('click', (event) => {
 });
 
 fixedOverlay.addEventListener('click', (event) => {
-  if (event.target.closest('.close-btn')) closeModalWindows();
+  if (
+    event.target.className === 'fixed-overlay' ||
+    event.target.closest('.close-btn')
+  )
+    closeModalWindows();
+});
+
+document.addEventListener('keyup', (event) => {
+  if (event.code === 'Escape') closeModalWindows();
+  if (event.code === 'Enter' && nameInput.value) startGame();
 });
 
 const openModalRecords = () => {
@@ -74,46 +81,32 @@ const createGameField = () => {
   }
 };
 
-const fillGameField = () => {
-  [...document.querySelectorAll('.cell')].forEach((cell) => {
-    cell.textContent = '';
-    cell.style.backgroundColor = '';
-  });
-  gameField.field.forEach((row, indexRow) =>
-    row.forEach((value, indexColumn) => {
-      if (value !== null) {
-        let cell = document.getElementById(`${indexRow}${indexColumn}`);
-        cell.textContent = value;
-        cell.style.backgroundColor = `${palette[value]}`;
-      }
-    })
-  );
-  bestScore.textContent = gameField.bestScore;
-  gameScore.textContent = gameField.score;
-};
-
 createGameField();
-fillGameField();
+gameField.fillGameField();
 
 const player = new Player();
 
 modalStartGame.addEventListener('click', (event) => {
   if (event.target.closest('.start-game__button')) {
     if (nameInput.value) {
-      modalStartGame.classList.add('opacity');
-      setTimeout(() => {
-        modalStartGame.classList.add('hidden');
-        gameField.fillRandomCell();
-        fillGameField();
-      }, 1000);
-      let name = nameInput.value;
-      player.name = name[0].toUpperCase() + name.slice(1);
+      startGame();
     } else {
       nameInput.classList.add('error');
       nameInput.setAttribute('placeholder', 'enter your name');
     }
   }
 });
+
+const startGame = () => {
+  modalStartGame.classList.add('opacity');
+  setTimeout(() => {
+    modalStartGame.classList.add('hidden');
+    gameField.fillRandomCell();
+    gameField.fillGameField();
+  }, 1000);
+  let name = nameInput.value;
+  player.name = name[0].toUpperCase() + name.slice(1);
+};
 
 nameInput.addEventListener('focus', () => {
   nameInput.classList.remove('error');
@@ -126,7 +119,7 @@ modalGameOver.addEventListener('click', (event) => {
     setTimeout(() => {
       modalGameOver.classList.add('hidden');
       gameField.fillRandomCell();
-      fillGameField();
+      gameField.fillGameField();
     }, 1000);
     gameField.field = Array.from(Array(4), (x) =>
       Array.from(Array(4), (x) => null)
@@ -134,6 +127,7 @@ modalGameOver.addEventListener('click', (event) => {
     gameField.saveChangedField();
     gameField.numberOfMoves = 0;
     gameField.score = 0;
+    gameField.fillGameField();
   }
   if (event.target.closest('.change-name__button')) {
     modalGameOver.classList.add('opacity');
@@ -156,18 +150,43 @@ modalGameOver.addEventListener('click', (event) => {
 document.addEventListener('keydown', function (event) {
   if (event.code === 'ArrowRight') {
     gameField.moveRight();
-    fillGameField();
   }
   if (event.code === 'ArrowLeft') {
     gameField.moveLeft();
-    fillGameField();
   }
   if (event.code === 'ArrowUp') {
     gameField.moveUp();
-    fillGameField();
   }
   if (event.code === 'ArrowDown') {
     gameField.moveDown();
-    fillGameField();
+  }
+});
+
+document.addEventListener('touchstart', (event) => {
+  touchStart = {
+    x: event.changedTouches[0].clientX,
+    y: event.changedTouches[0].clientY,
+  };
+});
+
+document.addEventListener('touchend', (event) => {
+  touchEnd = {
+    x: event.changedTouches[0].clientX,
+    y: event.changedTouches[0].clientY,
+  };
+
+  let diff = {
+    x: touchEnd.x - touchStart.x,
+    y: touchEnd.y - touchStart.y,
+  };
+
+  if (Math.abs(diff.x) > Math.abs(diff.y) && diff.x > 0) {
+    gameField.moveRight();
+  } else if (Math.abs(diff.x) > Math.abs(diff.y) && diff.x < 0) {
+    gameField.moveLeft();
+  } else if (Math.abs(diff.x) < Math.abs(diff.y) && diff.y > 0) {
+    gameField.moveDown();
+  } else if (Math.abs(diff.x) < Math.abs(diff.y) && diff.y < 0) {
+    gameField.moveUp();
   }
 });
